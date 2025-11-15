@@ -87,15 +87,6 @@ async def dreamxbotz_start():
     dreamxbotz.loop.create_task(keep_alive())
     await idle()
     
-if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    while True:
-        try:
-            loop.run_until_complete(dreamxbotz_start())
-            break  
-        except FloodWait as e:
-            print(f"FloodWait! Sleeping for {e.value} seconds.")
-            time.sleep(e.value) 
-        except KeyboardInterrupt:
-            logging.info('Service Stopped Bye 👋')
-            break
+if __name__ == "__main__":
+    logger.info("Started Filter Bot")
+    app.run()
