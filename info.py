@@ -207,7 +207,7 @@ BAD_WORDS = {
 NO_PORT = bool(environ.get('NO_PORT', False))
 APP_NAME = None
 if 'DYNO' in environ:
-    ON_HEROKU = True
+    ON_HEROKU = False
     APP_NAME = environ.get('APP_NAME')
 else:
     ON_HEROKU = False
@@ -221,7 +221,7 @@ MULTI_CLIENT = False
 name = str(environ.get('name', 'DREAMXBOTZ'))
 PING_INTERVAL = int(environ.get("PING_INTERVAL", "1200"))  # 20 minutes
 if 'DYNO' in environ:
-    ON_HEROKU = True
+    ON_HEROKU = False
     APP_NAME = str(getenv('APP_NAME'))
 else:
     ON_HEROKU = False
