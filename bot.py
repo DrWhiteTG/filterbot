@@ -9,13 +9,12 @@ from pyrogram.errors import FloodWait
 import asyncio
 from datetime import date, datetime
 import pytz
-from aiohttp import web
 from database.ia_filterdb import Media, Media2
 from database.users_chats_db import db
 from info import *
 from utils import temp
 from Script import script
-from plugins import web_server, check_expired_premium, keep_alive
+from plugins import check_expired_premium, keep_alive
 from dreamxbotz.Bot import dreamxbotz
 from dreamxbotz.util.keepalive import ping_server
 from dreamxbotz.Bot.clients import initialize_clients
@@ -31,8 +30,6 @@ logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 logging.getLogger("imdbpy").setLevel(logging.ERROR)
-logging.getLogger("aiohttp").setLevel(logging.ERROR)
-logging.getLogger("aiohttp.web").setLevel(logging.ERROR)
 logging.getLogger("pymongo").setLevel(logging.WARNING)
 
 botStartTime = time.time()
@@ -92,13 +89,6 @@ async def main():
     now = datetime.now(tz)
     curr_time = now.strftime("%H:%M:%S %p")
     await dreamxbotz.send_message(chat_id=LOG_CHANNEL, text=script.RESTART_TXT.format(temp.B_LINK, today, curr_time))
-    
-    app = await web_server()
-    runner = web.AppRunner(app)
-    await runner.setup()
-    bind_address = "0.0.0.0"
-    site = web.TCPSite(runner, bind_address, PORT)
-    await site.start()
     
     dreamxbotz.loop.create_task(keep_alive())
     
