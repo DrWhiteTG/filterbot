@@ -28,11 +28,11 @@ def is_enabled(value, default: bool = False) -> bool:
 # 1. BOT CREDENTIALS & SESSION
 # ==============================================================================
 # Telegram API credentials from https://my.telegram.org
-API_ID = int(environ.get('API_ID', ''))
-API_HASH = environ.get('API_HASH', '')
+SESSION = environ.get('SESSION', 'MrBear')   # Session name for the bot
+API_ID = int(environ.get('API_ID', '27247089')) # API ID from my.telegram.org
+API_HASH = environ.get('API_HASH', '2456e376e82f580ea1d1ed9d6444df8f')  # API Hash from my.telegram.org
+BOT_TOKEN = environ.get('BOT_TOKEN', "")    # Bot token from @BotFather
 
-# Bot token obtained from @BotFather
-BOT_TOKEN = environ.get('BOT_TOKEN', '')
 
 # Pyrogram session name
 SESSION = environ.get('SESSION', 'dreamxbotz_search')
@@ -44,29 +44,24 @@ name = str(environ.get('name', 'DREAMXBOTZ'))
 # 2. ADMINS, CHANNELS & PERMISSIONS
 # ==============================================================================
 # Telegram user IDs of bot administrators (space-separated in .env)
-ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '634637418').split()]
+ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '8199569855').split()] # Replace with the actual admin ID(s) to add
+CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1003310242251').split()]  # Channel id for auto indexing (make sure bot is admin)
 
-# Channels to auto-index files from (Bot must be an admin in these channels)
-CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-100').split()]
-
-# Logging & Storage Channels
-LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-100'))            # General activity & error logs
-BIN_CHANNEL = int(environ.get('BIN_CHANNEL', '-100'))            # File storage / binary cache channel
-PREMIUM_LOGS = int(environ.get('PREMIUM_LOGS', '-100'))          # Premium subscription logs
-DELETE_CHANNELS = [int(dch) if id_pattern.search(dch) else dch for dch in environ.get('DELETE_CHANNELS', '-100').split()]
-
-# Support Group & Request Channel
-support_chat_id = environ.get('SUPPORT_CHAT_ID', '-100')
+LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1003377826124'))  # Log channel id (make sure bot is admin)
+BIN_CHANNEL = int(environ.get('BIN_CHANNEL', '-1003292786854'))  # Bin channel id (make sure bot is admin)
+PREMIUM_LOGS = int(environ.get('PREMIUM_LOGS', '-1003377826124'))  # Premium logs channel id
+DELETE_CHANNELS = [int(dch) if id_pattern.search(dch) else dch for dch in environ.get('DELETE_CHANNELS', '-1003377826124').split()] #(make sure bot is admin)
+support_chat_id = environ.get('SUPPORT_CHAT_ID', '-1003105565303')  # Support group id (make sure bot is admin)
+reqst_channel = environ.get('REQST_CHANNEL_ID', '-1003105565303')  # Request channel id (make sure bot is admin)
+SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/+sJBLt9rLaOczOTA1')  # Support group link (make sure bot is admin)
 SUPPORT_CHAT_ID = int(support_chat_id) if support_chat_id and id_pattern.search(support_chat_id) else None
-SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/')
 
-reqst_channel = environ.get('REQST_CHANNEL_ID', '-100')
 REQST_CHANNEL = int(reqst_channel) if reqst_channel and id_pattern.search(reqst_channel) else None
 INDEX_REQ_CHANNEL = int(environ.get('INDEX_REQ_CHANNEL', LOG_CHANNEL))
 
 # Force Subscription Channels (Users must join these before using the bot)
-auth_req_channels = environ.get("AUTH_REQ_CHANNELS", "-100")
-auth_channels = environ.get("AUTH_CHANNELS", "-100")
+auth_req_channels = environ.get("AUTH_REQ_CHANNELS", "-1002560874701")# requst to join Channel for force sub (make sure bot is admin) only for bot ADMINS  
+auth_channels     = environ.get("AUTH_CHANNELS", "-1002560874701")# Channels for force sub (make sure bot is admin)
 AUTH_REQ_CHANNELS = [int(ch) for ch in auth_req_channels.split() if ch and id_pattern.match(ch)]
 AUTH_CHANNELS = [int(ch) for ch in auth_channels.split() if ch and id_pattern.match(ch)]
 
@@ -76,18 +71,17 @@ AUTH_USERS = (auth_users + ADMINS) if auth_users else []
 PREMIUM_USER = [int(user) if id_pattern.search(user) else user for user in environ.get('PREMIUM_USER', '').split()]
 
 # Social & Community Links
-GRP_LNK = environ.get('GRP_LNK', 'https://t.me/dreamxbotz')
-OWNER_LNK = environ.get('OWNER_LNK', 'https://t.me/dreamxbotz')
-UPDATE_CHNL_LNK = environ.get('UPDATE_CHNL_LNK', 'https://t.me/dreamxbotz')
-
+GRP_LNK = environ.get('GRP_LNK', 'https://t.me/+sJBLt9rLaOczOTA1') # Group link for the bot
+OWNER_LNK = environ.get('OWNER_LNK', 'https://t.me/bearserverbot') # Owner link for the bot
+UPDATE_CHNL_LNK = environ.get('UPDATE_CHNL_LNK', 'https://t.me/bearserver_bot') # Update channel link for the bot
 
 # ==============================================================================
 # 3. DATABASE CONFIGURATION (MongoDB)
 # ==============================================================================
 # Primary MongoDB Connection URI & Database details
 DATABASE_URI = environ.get('DATABASE_URI', '')
-DATABASE_NAME = environ.get('DATABASE_NAME', 'Cluster0')
-COLLECTION_NAME = environ.get('COLLECTION_NAME', 'dreamcinezone_files')
+DATABASE_NAME = environ.get('DATABASE_NAME', 'MrBear')
+COLLECTION_NAME = environ.get('COLLECTION_NAME', 'MrBearCollection')
 
 # Secondary MongoDB for multiple DB load balancing
 MULTIPLE_DB = is_enabled(os.environ.get('MULTIPLE_DB', "False"), False)
@@ -102,13 +96,13 @@ if not MULTIPLE_DB:
 # 4. BOT MEDIA & UI ASSETS
 # ==============================================================================
 # UI Banner & Poster Images
-PICS_URL = (environ.get('PICS_URL', 'https://api.aniwallpaper.workers.dev/random?type=girl')).split()
-PICS = (environ.get('PICS', 'https://graph.org/file/56b5deb73f3b132e2bb73.jpg https://graph.org/file/5303692652d91d52180c2.jpg https://graph.org/file/425b6f46efc7c6d64105f.jpg https://graph.org/file/876867e761c6c7a29855b.jpg')).split()
+PICS_URL = (environ.get('PICS_URL', 'https://api.aniwallpaper.workers.dev/random?type=men')).split()
+PICS = (environ.get('PICS', 'https://i.ibb.co/67HTWbVB/MrBear.png')).split()  # Sample pic
 NOR_IMG = environ.get("NOR_IMG", "https://graph.org/file/e20b5fdaf217252964202.jpg")
-MELCOW_PHOTO = environ.get("MELCOW_PHOTO", "https://graph.org/file/56b5deb73f3b132e2bb73.jpg")
+MELCOW_PHOTO = environ.get("MELCOW_PHOTO", "https://i.ibb.co/67HTWbVB/MrBear.png")
 SPELL_IMG = environ.get("SPELL_IMG", "https://graph.org/file/13702ae26fb05df52667c.jpg")
-SUBSCRIPTION = environ.get('SUBSCRIPTION', 'https://graph.org/file/242b7f1b52743938d81f1.jpg')
-FSUB_PICS = (environ.get('FSUB_PICS', 'https://graph.org/file/7478ff3eac37f4329c3d8.jpg https://graph.org/file/56b5deb73f3b132e2bb73.jpg')).split()
+SUBSCRIPTION = (environ.get('SUBSCRIPTION', 'https://i.ibb.co/vRY6LVQ/Mr-Bear-1.png'))
+FSUB_PICS = (environ.get('FSUB_PICS', 'https://i.ibb.co/2Ydw4LPr/Mr-Bear-2.png')).split()  # Fsub pic
 
 # Timezone settings
 TIMEZONE = environ.get('TIMEZONE', 'Asia/Kolkata')
@@ -121,17 +115,17 @@ TZ = pytz.timezone(TIMEZONE)
 CACHE_TIME = int(environ.get('CACHE_TIME', 300))                 # In-memory cache duration in seconds
 DELETE_TIME = int(environ.get("DELETE_TIME", "300"))              # Auto-delete message timer (seconds)
 MAX_LIST_ELM = int(environ.get("MAX_LIST_ELM") or 10) or None     # Search list items per page
-MAX_B_TN = environ.get("MAX_B_TN", "5")                           # Max buttons per row
+MAX_B_TN = environ.get("MAX_B_TN", "10")                           # Max buttons per row
 
 # Feature Toggles
 AUTO_FFILTER = is_enabled(environ.get('AUTO_FFILTER', "True"), True)
 AUTO_DELETE = is_enabled(environ.get('AUTO_DELETE', "True"), True)
 USE_CAPTION_FILTER = is_enabled(environ.get('USE_CAPTION_FILTER', "True"), True)
 INDEX_CAPTION = is_enabled(environ.get('SAVE_CAPTION', "True"), True)
-COVERX = is_enabled(environ.get('COVERX', "True"), True)
-PROTECT_CONTENT = is_enabled(environ.get('PROTECT_CONTENT', "False"), False)
-PM_SEARCH = is_enabled(environ.get('PM_SEARCH', "True"), True)
-EMOJI_MODE = is_enabled(environ.get('EMOJI_MODE', "True"), True)
+COVERX = is_enabled(environ.get('COVERX', "False"), True)
+PROTECT_CONTENT = is_enabled(environ.get('PROTECT_CONTENT', "True"), False)
+PM_SEARCH = is_enabled(environ.get('PM_SEARCH', "False"), True)
+EMOJI_MODE = is_enabled(environ.get('EMOJI_MODE', "False"), True)
 BUTTON_MODE = is_enabled(environ.get('BUTTON_MODE', "False"), False)
 P_TTI_SHOW_OFF = is_enabled(environ.get('P_TTI_SHOW_OFF', "False"), False)
 MAX_BTN = is_enabled(environ.get('MAX_BTN', "True"), True)
@@ -145,10 +139,10 @@ MAINTENANCE = is_enabled(environ.get('MAINTENANCE', "False"), False)
 CUSTOM_FILE_CAPTION = environ.get("CUSTOM_FILE_CAPTION", f"{script.CAPTION}")
 BATCH_FILE_CAPTION = environ.get("BATCH_FILE_CAPTION", CUSTOM_FILE_CAPTION)
 IMDB_TEMPLATE = environ.get("IMDB_TEMPLATE", f"{script.IMDB_TEMPLATE_TXT}")
-MSG_ALRT = environ.get('MSG_ALRT', 'Share & Support Us ♥️')
+MSG_ALRT = environ.get('MSG_ALRT', 'Share & Support Bearserver ♥️')
 
 # IMDB Settings
-IMDB = is_enabled(environ.get('IMDB', "True"), False)
+IMDB = is_enabled(environ.get('IMDB', "False"), False)
 LONG_IMDB_DESCRIPTION = is_enabled(environ.get("LONG_IMDB_DESCRIPTION", "False"), False)
 
 # Languages & Media Qualities Seasons
